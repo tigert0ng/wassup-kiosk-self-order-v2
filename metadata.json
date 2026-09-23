@@ -1,0 +1,6 @@
+{
+  "name": "WASSUP Payment Kiosk",
+  "description": "Kiosk tự phục vụ cảm ứng dọc 9:16 tại trạm rửa xe thông minh WASSUP. Hỗ trợ xác thực thiết bị, đăng nhập SĐT/PIN/QR, chọn gói dịch vụ, áp voucher và thanh toán QR.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

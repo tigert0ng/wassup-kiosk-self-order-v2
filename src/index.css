@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-green: #A2C62C;
+  --color-brand-green-hover: #8fb124;
+  --color-brand-green-light: #f0f7d4;
+  --color-matte-black: #1A1A1A;
+  --color-warm-white: #FAFAFA;
+  --color-forest-green: #59743E;
+  --color-warm-gold: #AC9653;
+  --color-earth-brown: #594026;
+  --color-sand-beige: #BCBC8F;
+  --color-mid-gray: #6B7280;
+
+  --font-display: 'Lexend', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: #121212;
+    color: var(--color-matte-black);
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Custom kiosk touch scrollbar styles */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(162, 198, 44, 0.4) transparent;
+}
+
+.touch-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.touch-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(162, 198, 44, 0.4);
+  border-radius: 9999px;
+}
+
+.touch-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
