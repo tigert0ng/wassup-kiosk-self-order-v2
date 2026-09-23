@@ -53,7 +53,7 @@ export const K8_OrderConfirmation: React.FC = () => {
     selectedAddons.reduce((acc, a) => acc + a.duration_min, 0);
 
   return (
-    <div className="flex-1 flex flex-col p-4 sm:p-7 max-w-3xl mx-auto w-full">
+    <div className="flex-1 flex flex-col p-4 sm:p-6 max-w-5xl mx-auto w-full">
       {/* Top Navigation */}
       <div className="flex items-center justify-between pb-3 border-b border-stone-200">
         <button
@@ -71,16 +71,19 @@ export const K8_OrderConfirmation: React.FC = () => {
       </div>
 
       <div className="text-center my-3">
-        <h1 className="text-2xl sm:text-3xl font-display font-black text-matte-black uppercase tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-display font-black text-matte-black uppercase tracking-tight">
           Xác Nhận Đơn Hàng & Ưu Đãi
         </h1>
-        <p className="text-xs sm:text-sm text-mid-gray mt-1 max-w-md mx-auto">
+        <p className="text-xs sm:text-sm text-mid-gray mt-1 max-w-lg mx-auto">
           Kiểm tra chi tiết dịch vụ, áp dụng mã ưu đãi thành viên trước khi tiến hành thanh toán.
         </p>
       </div>
 
-      {/* Main Order Card */}
-      <div className="bg-white border-2 border-stone-200 rounded-3xl p-5 sm:p-6 shadow-sm my-3 flex-1 overflow-y-auto touch-scroll">
+      {/* Main Order Card with 2 columns for 24-inch Kiosk */}
+      <div className="bg-white border-2 border-stone-200 rounded-3xl p-5 sm:p-6 shadow-xs my-3 flex-1 overflow-y-auto touch-scroll">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Left Column: Customer & Vehicle + Itemized Line items */}
+          <div className="space-y-4">
         {/* Customer & Vehicle Header Box */}
         <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-2 mb-4">
           <div className="flex items-center gap-3">
@@ -162,9 +165,13 @@ export const K8_OrderConfirmation: React.FC = () => {
             </div>
           ))}
         </div>
+        {/* End of Left Column */}
+      </div>
 
+      {/* Right Column: Voucher Section & Pricing */}
+      <div className="space-y-4">
         {/* Voucher Section */}
-        <div className="pt-4 border-t border-stone-200 mb-6">
+        <div className="pt-1 mb-6">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-xs uppercase font-bold text-gray-400 tracking-wider flex items-center gap-1.5">
               <TicketPercent className="w-4 h-4 text-brand-green" />
@@ -317,13 +324,16 @@ export const K8_OrderConfirmation: React.FC = () => {
                   {formatVND(subtotal)}
                 </span>
               )}
-              <span className="text-3xl font-display font-black text-brand-green">
+              <span className="text-2xl sm:text-3xl font-display font-black text-brand-green">
                 {formatVND(finalTotal)}
               </span>
             </div>
           </div>
         </div>
       </div>
+      {/* End of 2-column grid */}
+      </div>
     </div>
+  </div>
   );
 };

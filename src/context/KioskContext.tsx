@@ -25,10 +25,11 @@ interface KioskContextType {
   pairDevice: (code: string) => { success: boolean; message?: string; stationName?: string };
   unpairDevice: () => void;
 
-  // Session & Navigation
+  // Session & Navigation (24" Kiosk 1080x1920)
   step: KioskStep;
   goToStep: (step: KioskStep) => void;
-  kioskDisplayMode: 'portrait_frame' | 'full_viewport';
+  kioskDisplayMode: 'portrait_frame' | 'native_1080' | 'full_viewport';
+  setDisplayMode: (mode: 'portrait_frame' | 'native_1080' | 'full_viewport') => void;
   toggleDisplayMode: () => void;
 
   // Customer & Auth
@@ -78,6 +79,7 @@ interface KioskContextType {
   selectPaymentMethod: (method: PaymentMethodType) => void;
   currentOrder: KioskOrder | null;
   initiatePayment: () => void;
+  completeOrderWithMethod: (method: PaymentMethodType) => void;
   simPaymentSuccess: () => void;
   simPaymentFailure: () => void;
 
@@ -110,7 +112,7 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // 2. Navigation Step
   const [step, setStep] = useState<KioskStep>(() => (isPaired ? 'K1' : 'K0'));
-  const [kioskDisplayMode, setKioskDisplayMode] = useState<'portrait_frame' | 'full_viewport'>('portrait_frame');
+  const [kioskDisplayMode, setKioskDisplayMode] = useState<'portrait_frame' | 'native_1080' | 'full_viewport'>('portrait_frame');
 
   // 3. Customer & Vehicles
   const [customersList, setCustomersList] = useState<Customer[]>(() => {
@@ -166,8 +168,16 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     showToast('Đã thu hồi phiên thiết bị. Chuyển về màn K0.');
   }, [showToast]);
 
+  const setDisplayMode = useCallback((mode: 'portrait_frame' | 'native_1080' | 'full_viewport') => {
+    setKioskDisplayMode(mode);
+  }, []);
+
   const toggleDisplayMode = useCallback(() => {
-    setKioskDisplayMode((prev) => (prev === 'portrait_frame' ? 'full_viewport' : 'portrait_frame'));
+    setKioskDisplayMode((prev) => {
+      if (prev === 'portrait_frame') return 'native_1080';
+      if (prev === 'native_1080') return 'full_viewport';
+      return 'portrait_frame';
+    });
   }, []);
 
   const goToStep = useCallback((newStep: KioskStep) => {
@@ -516,6 +526,67 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setStep('K10');
   }, [customer, selectedVehicle, selectedPackage, vehicleClass, selectedAddons, subtotal, discountAmount, station, finalTotal, appliedVoucher, paymentMethod]);
 
+  // Complete Order Directly (e.g. Cash, Deferred, or instant POS/QR from K9)
+  const completeOrderWithMethod = useCallback(
+    (method: PaymentMethodType) => {
+      if (!customer || !selectedVehicle || !selectedPackage) return;
+
+      const items = [
+        {
+          name: selectedPackage.name,
+          type: 'main' as const,
+          price: vehicleClass === '4_5_cho' ? selectedPackage.base_price_4_5 : selectedPackage.base_price_7_9,
+          duration_min: selectedPackage.duration_min,
+        },
+        ...selectedAddons.map((a) => ({
+          name: a.name,
+          type: 'addon' as const,
+          price: vehicleClass === '4_5_cho' ? a.price_4_5 : a.price_7_9,
+          duration_min: a.duration_min,
+        })),
+      ];
+
+      const totalDuration = items.reduce((acc, cur) => acc + cur.duration_min, 0);
+      const isPaid = method === 'visa_mastercard' || method === 'qr_vnpay';
+
+      const order: KioskOrder = {
+        order_id: `ORD-${Math.floor(10000 + Math.random() * 90000)}`,
+        customer_id: customer.id,
+        customer_name: customer.name,
+        customer_phone: customer.phone,
+        license_plate: selectedVehicle.license_plate,
+        vehicle_class: vehicleClass,
+        station_name: station.name,
+        items,
+        base_amount: subtotal,
+        discount_amount: discountAmount,
+        vat_rate: station.vat_rate,
+        final_amount: finalTotal,
+        voucher_code: appliedVoucher?.code,
+        payment_method: method,
+        payment_status: isPaid ? 'paid' : 'pending',
+        assigned_bay: station.active_bays[Math.floor(Math.random() * station.active_bays.length)],
+        eta_minutes: totalDuration,
+        created_at: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setPaymentMethod(method);
+      setCurrentOrder(order);
+      setStep('K11');
+
+      if (method === 'cash') {
+        showToast('Đã tạo lệnh rửa xe! Vui lòng thanh toán tiền mặt tại quầy thu ngân.');
+      } else if (method === 'deferred') {
+        showToast('Đã xác nhận rửa trước - thanh toán sau tại quầy khi nhận xe!');
+      } else if (method === 'visa_mastercard') {
+        showToast('Thanh toán thẻ POS thành công! Đã tạo Work Order.');
+      } else {
+        showToast('Thanh toán QR thành công! Đã tạo Work Order.');
+      }
+    },
+    [customer, selectedVehicle, selectedPackage, vehicleClass, selectedAddons, subtotal, discountAmount, station, finalTotal, appliedVoucher, showToast]
+  );
+
   // Payment Sim Success
   const simPaymentSuccess = useCallback(() => {
     if (!currentOrder) return;
@@ -578,6 +649,7 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         step,
         goToStep,
         kioskDisplayMode,
+        setDisplayMode,
         toggleDisplayMode,
         customer,
         customersList,
@@ -607,6 +679,7 @@ export const KioskProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         selectPaymentMethod,
         currentOrder,
         initiatePayment,
+        completeOrderWithMethod,
         simPaymentSuccess,
         simPaymentFailure,
         cancelCurrentSession,

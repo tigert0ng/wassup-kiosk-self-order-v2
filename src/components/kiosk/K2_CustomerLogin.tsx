@@ -248,8 +248,8 @@ export const K2_CustomerLogin: React.FC = () => {
         </div>
 
         {/* Title */}
-        <div className="text-center mt-4">
-          <h1 className="text-2xl sm:text-3xl font-display font-black text-matte-black uppercase tracking-tight">
+        <div className="text-center mt-3">
+          <h1 className="text-xl sm:text-2xl font-display font-black text-matte-black uppercase tracking-tight">
             {subPhase === 'phone' && 'Đăng Nhập Khách Hàng'}
             {subPhase === 'pin' && 'Nhập Mã PIN Bảo Mật'}
             {subPhase === 'first_pin' && 'Thiết Lập Mã PIN Lần Đầu'}
@@ -306,7 +306,7 @@ export const K2_CustomerLogin: React.FC = () => {
                   <Phone className="w-3.5 h-3.5 text-brand-green" />
                   <span>Số Điện Thoại (10 Số)</span>
                 </span>
-                <div className="h-16 flex items-center justify-center tracking-wider text-3xl sm:text-4xl font-sans font-black text-matte-black mt-1">
+                <div className="h-13 flex items-center justify-center tracking-wider text-2xl sm:text-3xl font-sans font-black text-matte-black mt-1">
                   {phoneNumber ? (
                     formatPhoneNumber(phoneNumber)
                   ) : (
@@ -329,14 +329,14 @@ export const K2_CustomerLogin: React.FC = () => {
                 </div>
 
                 {/* PIN Mask Dots */}
-                <div className="h-16 flex items-center justify-center gap-3 mt-1">
+                <div className="h-13 flex items-center justify-center gap-3 mt-1">
                   {[0, 1, 2, 3, 4, 5].map((idx) => {
                     const currentVal = !isConfirmingStep ? pinCode : confirmPinCode;
                     const filled = currentVal.length > idx;
                     return (
                       <div
                         key={idx}
-                        className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 transition-all ${
+                        className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 transition-all ${
                           filled
                             ? 'bg-matte-black border-matte-black scale-110'
                             : 'border-stone-300 bg-stone-100'
@@ -349,7 +349,7 @@ export const K2_CustomerLogin: React.FC = () => {
             )}
 
             {errorMessage && (
-              <div className="mt-3 flex items-center justify-center gap-2 text-xs font-semibold text-red-600 bg-red-50 p-2 rounded-xl border border-red-200">
+              <div className="mt-2.5 flex items-center justify-center gap-2 text-xs font-semibold text-red-600 bg-red-50 p-2 rounded-xl border border-red-200">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 <span>{errorMessage}</span>
               </div>
@@ -372,13 +372,13 @@ export const K2_CustomerLogin: React.FC = () => {
           )}
 
           {/* Touch Numpad */}
-          <div className="grid grid-cols-3 gap-2.5 max-w-sm mx-auto w-full mt-4">
+          <div className="grid grid-cols-3 gap-2.5 max-w-sm mx-auto w-full mt-3">
             {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
               <button
                 key={digit}
                 type="button"
                 onClick={() => handleDigit(digit)}
-                className="h-15 sm:h-16 rounded-2xl bg-white hover:bg-stone-100 active:scale-95 border border-stone-200 text-2xl font-display font-bold text-matte-black shadow-xs transition-all flex items-center justify-center cursor-pointer"
+                className="h-14 sm:h-15 rounded-2xl bg-white hover:bg-stone-100 active:scale-95 border border-stone-200 text-xl sm:text-2xl font-display font-bold text-matte-black shadow-xs transition-all flex items-center justify-center cursor-pointer"
               >
                 {digit}
               </button>
@@ -386,21 +386,21 @@ export const K2_CustomerLogin: React.FC = () => {
             <button
               type="button"
               onClick={handleClear}
-              className="h-15 sm:h-16 rounded-2xl bg-stone-100 hover:bg-stone-200 active:scale-95 border border-stone-200 text-xs font-display font-bold uppercase tracking-wider text-mid-gray shadow-xs transition-all flex items-center justify-center cursor-pointer"
+              className="h-14 sm:h-15 rounded-2xl bg-stone-100 hover:bg-stone-200 active:scale-95 border border-stone-200 text-xs font-display font-bold uppercase tracking-wider text-mid-gray shadow-xs transition-all flex items-center justify-center cursor-pointer"
             >
               Xóa hết
             </button>
             <button
               type="button"
               onClick={() => handleDigit('0')}
-              className="h-15 sm:h-16 rounded-2xl bg-white hover:bg-stone-100 active:scale-95 border border-stone-200 text-2xl font-display font-bold text-matte-black shadow-xs transition-all flex items-center justify-center cursor-pointer"
+              className="h-14 sm:h-15 rounded-2xl bg-white hover:bg-stone-100 active:scale-95 border border-stone-200 text-xl sm:text-2xl font-display font-bold text-matte-black shadow-xs transition-all flex items-center justify-center cursor-pointer"
             >
               0
             </button>
             <button
               type="button"
               onClick={handleDelete}
-              className="h-15 sm:h-16 rounded-2xl bg-stone-100 hover:bg-stone-200 active:scale-95 border border-stone-200 text-mid-gray shadow-xs transition-all flex items-center justify-center cursor-pointer"
+              className="h-14 sm:h-15 rounded-2xl bg-stone-100 hover:bg-stone-200 active:scale-95 border border-stone-200 text-mid-gray shadow-xs transition-all flex items-center justify-center cursor-pointer"
             >
               <Delete className="w-6 h-6" />
             </button>

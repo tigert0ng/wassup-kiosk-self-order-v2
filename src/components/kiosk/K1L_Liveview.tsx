@@ -59,7 +59,7 @@ export const K1L_Liveview: React.FC = () => {
             <span className="text-[11px] text-gray-500">Áp lực cao & Bọt sinh học</span>
           </div>
 
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {MOCK_LIVEVIEW_DATA.processing.map((item) => (
               <div
                 key={item.bay}
@@ -70,7 +70,7 @@ export const K1L_Liveview: React.FC = () => {
                     <span className="inline-block bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-lg mb-1">
                       {item.bay}
                     </span>
-                    <div className="font-sans font-black text-3xl sm:text-4xl text-white tracking-tight">
+                    <div className="font-sans font-black text-2xl sm:text-3xl text-white tracking-tight">
                       {item.plate}
                     </div>
                     <div className="text-xs text-gray-300 font-medium mt-1">
@@ -155,7 +155,7 @@ export const K1L_Liveview: React.FC = () => {
             <span className="text-[11px] text-gray-500">Vui lòng lấy xe</span>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {MOCK_LIVEVIEW_DATA.completed.map((item) => (
               <div
                 key={item.plate}

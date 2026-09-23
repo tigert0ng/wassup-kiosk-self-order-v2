@@ -49,6 +49,9 @@ export interface AddonService {
   description_md: string;
   icon_name: string;
   category: 'interior' | 'exterior' | 'protection';
+  image_url?: string;
+  is_best_seller?: boolean;
+  badge?: string;
 }
 
 export interface Voucher {

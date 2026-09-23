@@ -41,14 +41,14 @@ export const K2a_QuickRegister: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-between p-5 sm:p-8 max-w-xl mx-auto w-full">
+    <div className="flex-1 flex flex-col justify-between p-5 sm:p-8 max-w-2xl mx-auto w-full">
       {/* Top Header */}
       <div>
         <div className="flex items-center justify-between pb-3 border-b border-stone-200">
           <button
             type="button"
             onClick={() => goToStep('K2')}
-            className="inline-flex items-center gap-1.5 text-xs font-display font-bold uppercase tracking-wider text-mid-gray hover:text-matte-black transition py-1 px-2 rounded-lg"
+            className="inline-flex items-center gap-1.5 text-xs font-display font-bold uppercase tracking-wider text-mid-gray hover:text-matte-black transition py-1 px-2 rounded-lg cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Quay lại đăng nhập</span>
@@ -62,7 +62,7 @@ export const K2a_QuickRegister: React.FC = () => {
           <div className="w-14 h-14 rounded-2xl bg-brand-green/10 text-forest-green flex items-center justify-center mx-auto mb-3">
             <UserPlus className="w-7 h-7 text-brand-green" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-display font-black text-matte-black uppercase tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-display font-black text-matte-black uppercase tracking-tight">
             Đăng Ký Nhanh Tại Kiosk
           </h1>
           <p className="text-xs sm:text-sm text-mid-gray mt-1 max-w-md mx-auto">

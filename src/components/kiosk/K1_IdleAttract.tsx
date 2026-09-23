@@ -9,17 +9,18 @@ export const K1_IdleAttract: React.FC = () => {
   // Auto transition to Liveview (K1L) after 30s idle
   useEffect(() => {
     const timer = setInterval(() => {
-      setIdleSeconds((prev) => {
-        if (prev <= 1) {
-          goToStep('K1L');
-          return 30;
-        }
-        return prev - 1;
-      });
+      setIdleSeconds((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [goToStep]);
+  }, []);
+
+  useEffect(() => {
+    if (idleSeconds === 0) {
+      goToStep('K1L');
+      setIdleSeconds(30);
+    }
+  }, [idleSeconds, goToStep]);
 
   return (
     <div

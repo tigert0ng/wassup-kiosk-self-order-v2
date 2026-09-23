@@ -42,16 +42,16 @@ export const K6_PackageCatalog: React.FC = () => {
       </div>
 
       <div className="text-center my-3">
-        <h1 className="text-2xl sm:text-3xl font-display font-black text-matte-black uppercase tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-display font-black text-matte-black uppercase tracking-tight">
           Chọn Dịch Vụ
         </h1>
-        <p className="text-xs sm:text-sm text-mid-gray mt-1 max-w-md mx-auto">
-          Giá tự động điều chỉnh theo phân hạng xe đã chọn. Chạm thẻ để chọn gói.
+        <p className="text-xs sm:text-sm text-mid-gray mt-1 max-w-lg mx-auto">
+          Giá tự động điều chỉnh theo phân hạng xe đã chọn ({vehicleClass === '4_5_cho' ? '4-5 chỗ' : '7-9 chỗ'}). Chạm thẻ để chọn gói.
         </p>
       </div>
 
-      {/* Grid 2 cột các gói dịch vụ (W0 - W5) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 my-3 flex-1 overflow-y-auto touch-scroll pb-4">
+      {/* Grid 2 cột các gói dịch vụ (W0 - W5) cho màn hình đứng 24 inch */}
+      <div className="grid grid-cols-2 gap-3.5 sm:gap-4 my-3 flex-1 overflow-y-auto touch-scroll pb-4">
         {packages.map((pkg, idx) => {
           const isSelected = selectedPackage?.id === pkg.id;
           const price = vehicleClass === '4_5_cho' ? pkg.base_price_4_5 : pkg.base_price_7_9;
@@ -151,14 +151,14 @@ export const K6_PackageCatalog: React.FC = () => {
               {/* Title & Tagline */}
               <div>
                 <h3
-                  className={`font-display font-black text-lg sm:text-xl leading-snug ${
+                  className={`font-display font-black text-base sm:text-lg leading-snug ${
                     isLastPremium ? 'text-white' : isW2 ? 'text-[#3E3113]' : 'text-matte-black'
                   }`}
                 >
                   {pkg.name}
                 </h3>
                 <p
-                  className={`text-xs mt-1 line-clamp-2 ${
+                  className={`text-xs mt-0.5 line-clamp-1 ${
                     isLastPremium ? 'text-stone-300' : 'text-mid-gray'
                   }`}
                 >
@@ -166,9 +166,9 @@ export const K6_PackageCatalog: React.FC = () => {
                 </p>
               </div>
 
-              {/* Bullets List */}
+              {/* Bullets List without nested scrollbar for 24-inch touch screen */}
               <div
-                className={`my-3 py-2 border-y space-y-1.5 flex-1 max-h-36 overflow-y-auto touch-scroll ${
+                className={`my-2.5 py-2 border-y space-y-1.5 flex-1 ${
                   isLastPremium
                     ? 'border-stone-800'
                     : isW2
@@ -181,7 +181,7 @@ export const K6_PackageCatalog: React.FC = () => {
                 {pkg.bullets.map((bullet, bIdx) => (
                   <div
                     key={bIdx}
-                    className={`flex items-start gap-1.5 text-xs ${
+                    className={`flex items-start gap-1.5 text-xs sm:text-[13px] leading-snug ${
                       isLastPremium ? 'text-stone-200' : 'text-gray-700'
                     }`}
                   >
@@ -192,7 +192,7 @@ export const K6_PackageCatalog: React.FC = () => {
                     >
                       •
                     </span>
-                    <span className="leading-tight">{bullet}</span>
+                    <span>{bullet}</span>
                   </div>
                 ))}
               </div>

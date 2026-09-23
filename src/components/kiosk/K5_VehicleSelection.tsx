@@ -65,19 +65,19 @@ export const K5_VehicleSelection: React.FC = () => {
         </div>
       </div>
 
-      <div className="text-center my-4">
-        <h1 className="text-2xl sm:text-3xl font-display font-black text-matte-black uppercase tracking-tight">
+      <div className="text-center my-3">
+        <h1 className="text-xl sm:text-2xl font-display font-black text-matte-black uppercase tracking-tight">
           Xe Của Bạn & Phân Hạng Giá
         </h1>
-        <p className="text-xs sm:text-sm text-mid-gray mt-1 max-w-md mx-auto">
+        <p className="text-xs sm:text-sm text-mid-gray mt-1 max-w-lg mx-auto">
           Chọn đúng xe để bảng giá được tính chính xác theo quy chuẩn diện tích thân vỏ.
         </p>
       </div>
 
       {/* Main Vehicles Grid or Add Form */}
-      <div className="my-4 flex-1">
+      <div className="my-3 flex-1">
         {!showAddForm ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             {vehicles.map((v) => {
               const isSelected = selectedVehicle?.id === v.id;
               const isSedan = v.vehicle_class === '4_5_cho';
@@ -86,9 +86,9 @@ export const K5_VehicleSelection: React.FC = () => {
                 <div
                   key={v.id}
                   onClick={() => handleVehicleCardClick(v)}
-                  className={`relative p-5 rounded-3xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[190px] ${
+                  className={`relative p-5 rounded-3xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between min-h-[180px] ${
                     isSelected
-                      ? 'bg-brand-green-light border-brand-green shadow-md shadow-brand-green/20 scale-[1.02]'
+                      ? 'bg-brand-green-light border-brand-green shadow-md shadow-brand-green/20 scale-[1.01]'
                       : 'bg-white border-stone-200 hover:border-brand-green/60 hover:shadow-xs'
                   }`}
                 >
@@ -105,7 +105,7 @@ export const K5_VehicleSelection: React.FC = () => {
                     </span>
 
                     {isSelected && (
-                      <div className="w-7 h-7 rounded-full bg-brand-green text-matte-black flex items-center justify-center font-black">
+                      <div className="w-6 h-6 rounded-full bg-brand-green text-matte-black flex items-center justify-center font-black text-xs">
                         ✓
                       </div>
                     )}
@@ -113,8 +113,8 @@ export const K5_VehicleSelection: React.FC = () => {
 
                   {/* License Plate Display (Big & Bold) */}
                   <div className="my-3">
-                    <div className="inline-block px-4 py-1.5 rounded-xl bg-white border-2 border-matte-black shadow-xs">
-                      <span className="font-sans font-black text-2xl sm:text-3xl text-matte-black tracking-wider">
+                    <div className="inline-block px-3.5 py-1.5 rounded-xl bg-white border-2 border-matte-black shadow-xs">
+                      <span className="font-sans font-black text-xl sm:text-2xl text-matte-black tracking-wider">
                         {v.license_plate}
                       </span>
                     </div>

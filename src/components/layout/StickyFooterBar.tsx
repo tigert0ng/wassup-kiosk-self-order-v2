@@ -29,7 +29,9 @@ export const StickyFooterBar: React.FC = () => {
     appliedVoucher,
     selectedVehicle,
     selectedPackage,
+    paymentMethod,
     initiatePayment,
+    completeOrderWithMethod,
     cancelCurrentSession,
     showToast,
   } = useKiosk();
@@ -75,9 +77,23 @@ export const StickyFooterBar: React.FC = () => {
     ctaDisabled = false;
     onCtaClick = () => goToStep('K9');
   } else if (step === 'K9') {
-    ctaLabel = 'Quét mã QR thanh toán';
-    ctaDisabled = false;
-    onCtaClick = () => initiatePayment();
+    if (paymentMethod === 'cash') {
+      ctaLabel = 'Xác nhận tiền mặt & Nhận buồng xe';
+      ctaDisabled = false;
+      onCtaClick = () => completeOrderWithMethod('cash');
+    } else if (paymentMethod === 'deferred') {
+      ctaLabel = 'Xác nhận trả sau & Nhận buồng xe';
+      ctaDisabled = false;
+      onCtaClick = () => completeOrderWithMethod('deferred');
+    } else if (paymentMethod === 'visa_mastercard') {
+      ctaLabel = 'Chạm thẻ POS thanh toán';
+      ctaDisabled = false;
+      onCtaClick = () => completeOrderWithMethod('visa_mastercard');
+    } else {
+      ctaLabel = 'Quét mã QR thanh toán';
+      ctaDisabled = false;
+      onCtaClick = () => initiatePayment();
+    }
   }
 
   const handleStepClick = (targetIndex: number) => {

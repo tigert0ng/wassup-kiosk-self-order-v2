@@ -17,10 +17,10 @@ import { K9_PaymentMethod } from '../kiosk/K9_PaymentMethod';
 import { K10_PaymentProcessing } from '../kiosk/K10_PaymentProcessing';
 import { K11_SuccessEta } from '../kiosk/K11_SuccessEta';
 
-import { Wifi, PhoneCall, AlertCircle, Building2 } from 'lucide-react';
+import { Wifi, PhoneCall, AlertCircle, Building2, Monitor } from 'lucide-react';
 
 export const KioskFrame: React.FC = () => {
-  const { step, kioskDisplayMode, station, toastMessage, isPaired, showToast } = useKiosk();
+  const { step, kioskDisplayMode, setDisplayMode, station, toastMessage, isPaired, showToast } = useKiosk();
   const [currentTime, setCurrentTime] = useState('');
   const [showStaffCallModal, setShowStaffCallModal] = useState(false);
 
@@ -75,18 +75,24 @@ export const KioskFrame: React.FC = () => {
     }
   };
 
-  const isPortraitFrame = kioskDisplayMode === 'portrait_frame';
+  // Determine frame styling for 24-inch Kiosk (1080 x 1920 px)
+  let containerStyle = 'w-full transition-all duration-300 flex flex-col relative bg-warm-white';
+
+  if (kioskDisplayMode === 'portrait_frame') {
+    // 24" Kiosk Preview on Desktop (Vertical 9:16 aspect ratio, generous 840px-960px width)
+    containerStyle += ' max-w-[840px] xl:max-w-[900px] 2xl:max-w-[960px] h-[95vh] rounded-[32px] sm:rounded-[36px] border-[8px] sm:border-[12px] border-[#222222] shadow-[0_0_60px_rgba(0,0,0,0.85)] overflow-hidden ring-1 ring-white/10';
+  } else if (kioskDisplayMode === 'native_1080') {
+    // 1:1 Pixel Native Kiosk Display (1080px physical width, 1920px height for kiosk hardware)
+    containerStyle += ' w-[1080px] min-h-[1920px] max-w-full rounded-none border-0 shadow-2xl overflow-hidden';
+  } else {
+    // Full Viewport (fluid up to 1080px max-width)
+    containerStyle += ' max-w-[1080px] w-full min-h-screen rounded-none border-0 shadow-none mx-auto';
+  }
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] text-[#1A1A1A] flex flex-col items-center justify-center p-0 sm:p-4 lg:p-6 overflow-x-hidden">
+    <div className="min-h-screen bg-[#0d0d0d] text-[#1A1A1A] flex flex-col items-center justify-center p-0 sm:p-3 lg:p-4 overflow-x-hidden">
       {/* Outer Kiosk Bezel & Frame */}
-      <div
-        className={`w-full transition-all duration-300 flex flex-col relative ${
-          isPortraitFrame
-            ? 'max-w-[480px] min-h-[920px] max-h-[96vh] rounded-3xl sm:rounded-[40px] border-4 sm:border-8 border-[#222222] shadow-[0_0_50px_rgba(0,0,0,0.8)] bg-warm-white overflow-hidden ring-1 ring-white/10'
-            : 'max-w-full min-h-screen rounded-none border-0 bg-warm-white'
-        }`}
-      >
+      <div className={containerStyle}>
         {/* Hardware Status Bar (Top) */}
         <div className="bg-matte-black text-white px-5 py-2.5 flex items-center justify-between text-xs select-none shrink-0 border-b border-[#262626]">
           <div className="flex items-center gap-2">
@@ -99,6 +105,50 @@ export const KioskFrame: React.FC = () => {
             </div>
           </div>
 
+          {/* Kiosk Display Mode Switcher */}
+          <div className="flex items-center gap-1 bg-[#1A1A1A] border border-stone-800 rounded-lg p-0.5 text-[10px] sm:text-[11px]">
+            <span className="text-gray-400 font-semibold px-2 hidden md:inline-flex items-center gap-1">
+              <Monitor className="w-3 h-3 text-brand-green" />
+              <span>Kiosk 24" (1080×1920)</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setDisplayMode('portrait_frame')}
+              className={`px-2 py-0.5 rounded font-bold cursor-pointer transition ${
+                kioskDisplayMode === 'portrait_frame'
+                  ? 'bg-brand-green text-matte-black shadow-xs'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+              title="Khung Kiosk 24-inch (Tỷ lệ 9:16 thu gọn trên desktop)"
+            >
+              9:16 Kiosk
+            </button>
+            <button
+              type="button"
+              onClick={() => setDisplayMode('native_1080')}
+              className={`px-2 py-0.5 rounded font-bold cursor-pointer transition ${
+                kioskDisplayMode === 'native_1080'
+                  ? 'bg-brand-green text-matte-black shadow-xs'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+              title="Kích thước thực tế 1080x1920 px (Chuẩn phần cứng kiosk)"
+            >
+              1080px Native
+            </button>
+            <button
+              type="button"
+              onClick={() => setDisplayMode('full_viewport')}
+              className={`px-2 py-0.5 rounded font-bold cursor-pointer transition ${
+                kioskDisplayMode === 'full_viewport'
+                  ? 'bg-brand-green text-matte-black shadow-xs'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+              title="Tràn toàn màn hình"
+            >
+              Tràn viền
+            </button>
+          </div>
+
           <div className="flex items-center gap-3">
             {/* Call Staff Button */}
             <button
@@ -107,7 +157,7 @@ export const KioskFrame: React.FC = () => {
               className="flex items-center gap-1 text-[11px] font-display font-bold uppercase tracking-wider text-brand-green hover:underline cursor-pointer"
             >
               <PhoneCall className="w-3.5 h-3.5" />
-              <span>Gọi nhân viên</span>
+              <span className="hidden sm:inline">Gọi nhân viên</span>
             </button>
 
             {/* Online Status */}
